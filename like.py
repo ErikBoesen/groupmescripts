@@ -9,8 +9,12 @@ parser = argparse.ArgumentParser(description='Analyze a GroupMe chat')
 parser.add_argument('token', help='Your GroupMe developer token')
 args = parser.parse_args()
 
+def endpoint(path):
+    return 'https://api.groupme.com/v3/' + path + '?token=' + args.token
 def get(path, params=None):
-    return requests.get('https://api.groupme.com/v3/' + path + '?token=' + args.token, params=params).json()['response']
+    return requests.get(endpoint(path), params=params).json()['response']
+def post(path):
+    return requests.post(endpoint(path)).json()
 
 group = get('groups/%d' % GROUP_ID)
 
@@ -28,8 +32,9 @@ while message_number < group['messages']['count']:
         message_number += 1
 
         text = message['text'] or ''
-        print(text)
+        if not (message['sender_id'] == MY_ID or MY_ID in message['favorited_by']):
 
+            print('Liked: ' + text)
 
     message_id = messages[-1]['id']  # Get last message's ID for next request
     remaining = 100 * message_number / group['messages']['count']
