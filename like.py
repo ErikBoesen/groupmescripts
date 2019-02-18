@@ -14,7 +14,7 @@ def endpoint(path):
 def get(path, params=None):
     return requests.get(endpoint(path), params=params).json()['response']
 def post(path):
-    return requests.post(endpoint(path)).json()
+    requests.post(endpoint(path))
 
 group = get('groups/%d' % GROUP_ID)
 
@@ -33,7 +33,7 @@ while message_number < group['messages']['count']:
 
         text = message['text'] or ''
         if not (message['sender_id'] == MY_ID or MY_ID in message['favorited_by']):
-
+            post('messages/%d/%s/like' % (GROUP_ID, message['id']))
             print('Liked: ' + text)
 
     message_id = messages[-1]['id']  # Get last message's ID for next request
