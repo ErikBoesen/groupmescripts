@@ -1,7 +1,7 @@
 import requests
 import argparse
 
-GROUP_ID = 48071223
+GROUP_ID = 46649296
 MY_ID = 41430499
 TARGET_ID = 31870258
 
@@ -21,7 +21,8 @@ group = get('groups/%d' % GROUP_ID)
 
 message_id = 0
 message_number = 0
-frequency = {}
+occurrences = {}
+num_words = 0
 while message_number < group['messages']['count']:
     params = {
         # Get maximum number of messages at a time
@@ -36,17 +37,21 @@ while message_number < group['messages']['count']:
         if message['sender_type'] == 'user':
             text = message['text'] or ''
             text = text.lower()
-            text = [c for c in text if c.isalpha() or c == ' ']
+            text = ''.join([c for c in text if c.isalpha() or c == ' '])
             words = text.split()
             num_words += len(words)
             for word in words:
-                if word not in frequency:
-                    frequency[word] = 0
-                frequency[word] += 1
+                if word not in occurrences:
+                    occurrences[word] = 0
+                occurrences[word] += 1
 
     message_id = messages[-1]['id']  # Get last message's ID for next request
     remaining = 100 * message_number / group['messages']['count']
     print('\r%.2f%% done' % remaining, end='')
-    break
 
-print(frequency)
+print('\nParsed %d messages.' % message_number)
+
+with open('words.csv', 'w') as f:
+    f.write('word,occurrences,frequency\n')
+    for word in occurrences:
+        f.write('%s,%d,%f\n' % (word, occurrences[word], occurrences[word] / num_words))
