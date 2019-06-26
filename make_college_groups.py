@@ -14,20 +14,20 @@ def get(path, params=None):
     return requests.get(endpoint(path), params=params).json()['response']
 
 colleges = [
-        'Benjamin Franklin': '51337432/1P01Jawj',
-        'Berkeley': '51337452/WS6dYrya',
-        'Branford': '51337464/0DfxyBPh',
-        'Davenport': '51337471/QydP3Uqp',
-        'Ezra Stiles': '51337477/4SwHEUhM',
-        'Grace Hopper': '51337487/NqXZODp7',
-        'Jonathan Edwards': '51337498/t5Oq3QCc',
-        'Morse': '51337503/ptRvZZoN',
-        'Pauli Murray': '51337511/YNisIp1h',
-        'Pierson': '51337516/umZfwuER',
-        'Saybrook': '51337528/6wtXL5hD',
-        'Silliman': '51337538/NuVpessh',
-        'Timothy Dwight': '51337543/WU4U245f',
-        'Trumbull': '51337553/VKFb0cmd',
+        'Benjamin Franklin',
+        'Berkeley',
+        'Branford',
+        'Davenport',
+        'Ezra Stiles',
+        'Grace Hopper',
+        'Jonathan Edwards',
+        'Morse',
+        'Pauli Murray',
+        'Pierson',
+        'Saybrook',
+        'Silliman',
+        'Timothy Dwight',
+        'Trumbull',
 ]
 from groupy.client import Client
 client = Client.from_token(args.token)
@@ -42,9 +42,6 @@ for college in colleges:
         break
     image_url = image_upload.json()['payload']['url']
     print(image_url)
-    new_group = client.groups.create('Yale ' + college + ' College 2023', image_url=image_url, share=True)
-    results[college] = new_group.share_url
-    """
     creation = requests.post('https://api.groupme.com/v3/groups?token=' + args.token,
                              data={'name': 'Yale ' +  college + ' College 2023',
                                    'share': True,
@@ -54,5 +51,4 @@ for college in colleges:
         print(creation.text)
         break
     results[college] = creation.json()['share_url']
-    """
 print(results)
