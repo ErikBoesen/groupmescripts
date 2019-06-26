@@ -12,8 +12,6 @@ def endpoint(path):
     return 'https://api.groupme.com/v3/' + path + '?token=' + args.token
 def get(path, params=None):
     return requests.get(endpoint(path), params=params).json()['response']
-def post(path, data):
-    requests.post(endpoint(path), data=data)
 
 colleges = [
     'Benjamin Franklin',
@@ -33,11 +31,24 @@ colleges = [
     'Timothy Dwight',
     'Trumbull',
 ]
+results = {}
 for college in colleges:
-    image_upload = requests.post('https://image.groupme.com/pictures?token=' + args.token, files={'file': open('shields/' + college.replace(' ', ''), 'rb')})
+    print(college)
+    image_upload = requests.post('https://image.groupme.com/pictures?token=' + args.token,
+                                 files={'file': open('shields/' + college.replace(' ', '') + '.png', 'rb')})
     if not image_upload.ok:
+        print('Image upload failed.')
+        print(image_upload.text)
         break
     image_url = image_upload.json()['payload']['url']
-    post('groups', {'name': 'Yale ' +  college + ' College 2023',
-                    'share': True,
-                    'image_url': image_url})
+    print(image_url)
+    creation = requests.post('https://api.groupme.com/v3/groups?token=' + args.token,
+                             data={'name': 'Yale ' +  college + ' College 2023',
+                                   'share': True,
+                                   'image_url': image_url})
+    if not creation.ok:
+        print('Creation failed.')
+        print(creation.text)
+        break
+    results[college] = creation.json()['share_url']
+print(results)
