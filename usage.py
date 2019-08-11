@@ -38,8 +38,6 @@ while message_number < group['messages']['count']:
 
     message_id = messages[-1]['id']  # Get last message's ID for next request
     remaining = 100 * message_number / group['messages']['count']
-    if remaining > 5:
-        break
     print('\r%.2f%% done' % remaining, end='')
 
 print(frequency)
