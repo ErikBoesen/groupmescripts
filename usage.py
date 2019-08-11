@@ -1,3 +1,4 @@
+import os
 import requests
 from datetime import date
 
@@ -27,7 +28,7 @@ while message_number < group['messages']['count']:
     for message in messages:
         message_number += 1
         if not message['system']:
-            d = date.fromtimestamp(message['timestamp'])
+            d = date.fromtimestamp(message['created_at'])
             if frequency.get(d):
                 frequency[d] += 1
             else:
