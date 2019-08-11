@@ -1,6 +1,8 @@
 import os
 import requests
 from datetime import date
+from collections import OrderedDict
+
 
 GROUP_ID = 46649296
 
@@ -11,7 +13,7 @@ def get(path, params=None):
 def post(path):
     requests.post(endpoint(path))
 
-frequency = {}
+frequency = OrderedDict()
 
 group = get('groups/%d' % GROUP_ID)
 
@@ -41,3 +43,7 @@ while message_number < group['messages']['count']:
     print('\r%.2f%% done' % remaining, end='')
 
 print(frequency)
+with open('usage.csv', 'w') as f:
+    f.write('date,messages\n')
+    for d, messages in reversed(list(frequency.items())):
+        f.write(d.strftime('%Y-%m-%d') + ',' + str(messages) + '\n')
