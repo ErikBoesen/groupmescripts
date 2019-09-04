@@ -27,8 +27,10 @@ while message_number < group['messages']['count']:
     if message_id:
         params['before_id'] = message_id
     messages = get('groups/%s/messages' % group['id'], params)['messages']
+
     for message in messages:
         message_number += 1
+
         if not message['system']:
             d = date.fromtimestamp(message['created_at'])
             if frequency.get(d):
