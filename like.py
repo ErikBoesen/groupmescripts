@@ -1,9 +1,8 @@
 import requests
 import argparse
 
-GROUP_ID = 48071223
+GROUP_ID = 57639249
 MY_ID = 41430499
-TARGET_ID = 31870258
 
 
 parser = argparse.ArgumentParser(description='Analyze a GroupMe chat')
@@ -33,7 +32,7 @@ while message_number < group['messages']['count']:
         message_number += 1
 
         text = message['text'] or ''
-        if not (message['sender_id'] == MY_ID or MY_ID in message['favorited_by']) and message['user_id'] == str(TARGET_ID):
+        if not (message['sender_id'] == MY_ID or MY_ID in message['favorited_by']):
             post('messages/%d/%s/like' % (GROUP_ID, message['id']))
             print('Liked: ' + text)
 
