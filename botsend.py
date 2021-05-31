@@ -7,5 +7,5 @@ while True:
     text = input("> ")
     for bot_id in bot_ids:
         print("Sending to " + bot_id + "...", end="")
-        r = requests.post("https://api.groupme.com/v3/bots/post", data={"bot_id": bot_id, "text": text})
+        r = requests.post("https://api.groupme.com/v3/bots/post", json={"bot_id": bot_id, "text": text})
         print(" done.")
