@@ -3,7 +3,7 @@ import os
 
 TOKEN = os.environ['GROUPME_ACCESS_TOKEN']
 
-GROUP_ID = 46422965
+GROUP_ID = 65861954
 
 JOIN_URL = 'https://groupme.com/join_group/'
 
@@ -33,10 +33,10 @@ while message_number < group['messages']['count']:
         if message['sender_type'] == 'user':
             text = message['text'] or ''
             if JOIN_URL in text:
-                print(messsage['text'])
+                print(message['text'])
 
     message_id = messages[-1]['id']  # Get last message's ID for next request
     remaining = 100 * message_number / group['messages']['count']
-    print('\r%.2f%% done' % remaining, end='')
+    #print('\r%.2f%% done' % remaining, end='')
 
 print('\nParsed %d messages.' % message_number)
